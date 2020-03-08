@@ -13,8 +13,8 @@ class StateTest extends React.Component {
         this.pushToSa = this.pushToSa.bind(this)
     }
 
-    sbPlus() {
-        console.log('aaa')
+    sbPlus(e) {
+        console.log(e)
         this.setState(state => ({
             sb: ++state.sb
         }))
