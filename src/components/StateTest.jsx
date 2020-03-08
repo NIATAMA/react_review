@@ -20,6 +20,7 @@ class StateTest extends React.Component {
         }))
     }
     pushToSa() {
+        console.log(this.setState)
         this.setState((state) => ({
             sa: state.sa.concat(state.sb)
         }))
