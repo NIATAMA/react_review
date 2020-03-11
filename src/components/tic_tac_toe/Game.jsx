@@ -32,44 +32,14 @@ function Square(props) {
 }
 
 class Board extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            squares: Array(9).fill(null),
-            xIsNext: true
-        }
-    }
-
-    updateBoardState = (i) => {
-        // 数据不可变，故直接复制个新的数组
-        const squares = this.state.squares.slice()
-        // 赢家已出现/某格已被填充
-        if (calculateWinner(squares) || squares[i]) return
-        // 游戏继续
-        squares[i] = this.state.xIsNext ? 'X' : 'O'
-        this.setState(state => ({ squares, xIsNext: !state.xIsNext }))
-    }
-
     renderSquare(i) {
-        return <Square value={this.state.squares[i]} onClick={() => this.updateBoardState(i)} />;
+        return <Square value={this.props.squares[i]} onClick={() => this.props.updateGameState(i)} />;
     }
 
     render() {
-        // 状态
-        const winner = calculateWinner(this.state.squares)
-        let status
-
-        if (winner) {
-            // 出现赢家
-            status = 'Winner is ' + winner
-        } else {
-            // 无赢家
-            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O')
-        }
 
         return (
             <div>
-                <div className="status">{status}</div>
                 <div className="board-row">
                     {this.renderSquare(0)}
                     {this.renderSquare(1)}
@@ -91,14 +61,44 @@ class Board extends React.Component {
 }
 
 class Game extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            squares: Array(9).fill(null),
+            xIsNext: true
+        }
+    }
+
+    // TODO: 状态再提升，实现撤销与恢复功能
+    updateGameState = (i) => {
+        // 数据不可变，故直接复制个新的数组
+        const squares = this.state.squares.slice()
+        // 赢家已出现/某格已被填充
+        if (calculateWinner(squares) || squares[i]) return
+        // 游戏继续
+        squares[i] = this.state.xIsNext ? 'X' : 'O'
+        this.setState(state => ({ squares, xIsNext: !state.xIsNext }))
+    }
     render() {
+        // 状态
+        const winner = calculateWinner(this.state.squares)
+        let status
+
+        if (winner) {
+            // 出现赢家
+            status = 'Winner is ' + winner
+        } else {
+            // 无赢家
+            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O')
+        }
         return (
             <div className="game">
                 <div className="game-board">
-                    <Board />
+                    <Board squares={this.state.squares}
+                        updateGameState={this.updateGameState} />
                 </div>
                 <div className="game-info">
-                    <div>{/* status */}</div>
+                    <div>{status}</div>
                     <ol>{/* TODO */}</ol>
                 </div>
             </div>
