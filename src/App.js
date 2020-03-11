@@ -5,16 +5,18 @@ import './App.css';
 // import StateTest from './components/StateTest'
 // import ConditionRender from './components/ConditionRender'
 // import Lists from './components/Lists'
-import LiftingStateUp from './components/LiftingStateUp'
+// import LiftingStateUp from './components/LiftingStateUp'
+import Game from './components/tic_tac_toe/Game'
 
 function App(props) {
   // <SimpleClock />
   // <StateTest />
   // <ConditionRender />
   // <Lists />
+  // <LiftingStateUp />
   return (
     <div>
-      <LiftingStateUp />
+      <Game />
     </div>
   );
 }
