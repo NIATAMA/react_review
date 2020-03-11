@@ -6,7 +6,8 @@ import './App.css';
 // import ConditionRender from './components/ConditionRender'
 // import Lists from './components/Lists'
 // import LiftingStateUp from './components/LiftingStateUp'
-import Game from './components/tic_tac_toe/Game'
+// import Game from './components/tic_tac_toe/Game'
+import ContextTest from './components/ContextTest'
 
 function App(props) {
   // <SimpleClock />
@@ -14,9 +15,10 @@ function App(props) {
   // <ConditionRender />
   // <Lists />
   // <LiftingStateUp />
+  // <Game />
   return (
     <div>
-      <Game />
+      <ContextTest />
     </div>
   );
 }
