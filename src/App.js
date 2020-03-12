@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 // comps
 // import SimpleClock from './components/SimpleClock'
 // import StateTest from './components/StateTest'
@@ -7,18 +6,19 @@ import './App.css';
 // import Lists from './components/Lists'
 // import LiftingStateUp from './components/LiftingStateUp'
 // import Game from './components/tic_tac_toe/Game'
-import ContextTest from './components/ContextTest'
+// import ContextTest from './components/ContextTest'
+import RouterIndex from './components/reactRouter_pra/RouterIndex'
 
 function App(props) {
-  // <SimpleClock />
   // <StateTest />
   // <ConditionRender />
   // <Lists />
   // <LiftingStateUp />
   // <Game />
+  // <ContextTest />
   return (
     <div>
-      <ContextTest />
+      <RouterIndex />
     </div>
   );
 }
