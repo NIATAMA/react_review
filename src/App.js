@@ -7,7 +7,8 @@ import React from 'react';
 // import LiftingStateUp from './components/LiftingStateUp'
 // import Game from './components/tic_tac_toe/Game'
 // import ContextTest from './components/ContextTest'
-import RouterIndex from './components/reactRouter_pra/RouterIndex'
+// import RouterIndex from './components/reactRouter_pra/RouterIndex'
+import ReduxIndex from './components/redux/ReduxIndex'
 
 function App(props) {
   // <StateTest />
@@ -16,10 +17,10 @@ function App(props) {
   // <LiftingStateUp />
   // <Game />
   // <ContextTest />
+  // <RouterIndex />
+
   return (
-    <div>
-      <RouterIndex />
-    </div>
+    <ReduxIndex />
   );
 }
 
