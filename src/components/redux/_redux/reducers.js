@@ -7,7 +7,7 @@ export function counter(state = 0, action) {
         case actionTypes.INCREMENT:
             return state + action.data
         case actionTypes.DECREMENT:
-            return state + action.data
+            return state - action.data
         default:
             return state
     }
