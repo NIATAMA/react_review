@@ -25,3 +25,7 @@
 ## /reactRouter_pra/
 - react-router-dom的使用
 - 嵌套路由的例子
+
+## /redux/
+- redux结合react-redux的使用
+- 点击增加的例子
