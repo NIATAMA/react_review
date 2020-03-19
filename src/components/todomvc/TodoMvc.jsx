@@ -100,9 +100,9 @@ class TodoMvc extends React.Component {
             // 是对象
             newtodos = this.state.todos.map(val => (val.id === todo.id ? todo : val))
         }
-        this.setState({
-            todos: newtodos
-        })
+        // 更新数据
+        this.setState({ todos: newtodos })
+        window.localStorage.setItem('reactTodomvc', JSON.stringify(newtodos))
     }
 
     /**
@@ -114,6 +114,7 @@ class TodoMvc extends React.Component {
         let newTodos = this.state.todos.slice()
         newTodos.unshift({ completed: false, title: todoTitle, id: newTodos[0] ? newTodos[0].id + 1 : 1 })
         this.setState({ todos: newTodos })
+        window.localStorage.setItem('reactTodomvc', JSON.stringify(newTodos))
     }
 
     render() {
