@@ -9,13 +9,39 @@ import './index.css'
 import TodoList from './TodoList.jsx'
 
 // header
-function Header(props) {
-    return (
-        <header className="header">
-            <h1>todos</h1>
-            <input className="new-todo" placeholder="What needs to be done?" />
-        </header>
-    )
+class Header extends React.Component {
+
+    constructor(props) {
+        super(props)
+        this.mipt = React.createRef()
+    }
+
+    componentDidMount() {
+        // 处理主输入框自动聚焦
+        if (this.mipt) this.mipt.current.focus()
+    }
+
+    /**
+     * 添加todos
+     * @e 事件合成对象
+     */
+    insertTodos = (e) => {
+        // 回车添加-添加完毕清空输入框- 不能为空
+        let value = e.target.value
+        if (e.keyCode !== 13 || !value) return
+        this.props.onInsertTodos(value)
+        e.target.value = ''
+    }
+
+    render() {
+        return (
+            <header className="header">
+                <h1>mytodos</h1>
+                <input className="new-todo" placeholder="What needs to be done?"
+                    ref={this.mipt} onKeyDown={this.insertTodos} />
+            </header>
+        )
+    }
 }
 
 // footer
@@ -43,29 +69,50 @@ class TodoMvc extends React.Component {
 
     state = {
         todos: [
-            { completed: false, title: '测试文本', id: 'test' },
+            { completed: false, title: '测试文本', id: 1 },
         ],
         mainIpt: ''
     }
 
     /**
      * 更新state.todos
-     * @todo 更新的元素
+     * @todo 更新的元素或者数组
      */
     changeTodos = (todo) => {
-        // todo 是一个todos里的数组元素
-        let newtodos = this.state.todos.map(val => (val.id === todo.id ? todo : val))
+        // 判断todo是数组还是对象
+        let newtodos
+        if (Array.isArray(todo)) {
+            // 是数组
+            newtodos = todo
+        } else {
+            // 是对象
+            newtodos = this.state.todos.map(val => (val.id === todo.id ? todo : val))
+        }
         this.setState({
             todos: newtodos
         })
     }
 
+    /**
+     * 添加state.todos
+     * @todoTitle 添加的todo的标题
+     */
+    insertTodos = (todoTitle) => {
+        // todo 是一个todos里的数组元素
+        let newTodos = this.state.todos.slice()
+        newTodos.unshift({ completed: false, title: todoTitle, id: newTodos[0] ? newTodos[0].id + 1 : 1 })
+        this.setState({ todos: newTodos })
+    }
+
     render() {
+        // 无待办事项时隐藏
+        let todoslist = this.state.todos.length > 0 ? (<TodoList todos={this.state.todos} updateTodos={this.changeTodos} />) : ''
+        let footer = this.state.todos.length > 0 ? (<Footer />) : ''
         return (
             <section className="todoapp">
-                <Header />
-                <TodoList todos={this.state.todos} updateTodos={this.changeTodos} />
-                <Footer />
+                <Header onInsertTodos={this.insertTodos} />
+                {todoslist}
+                {footer}
             </section>
         )
     }
