@@ -15,7 +15,7 @@ class TodoList extends React.Component {
         if (!length) this.setState({ toggleAll: true })
     }
     /**
-     * 更新todo
+     * 更新单个todo
      * @oldtodo 旧的todo
      * @value 更新的值
      */
@@ -38,40 +38,11 @@ class TodoList extends React.Component {
     }
 
     /**
-     * 更新todos
-     * @oldtodo 旧的todo
-     * @value 更新的值
-     */
-    updateTodos = (oldtodo, value) => {
-        if (value === '') return
-        let newtodo = Object.assign(oldtodo)
-        // 判断是更新状态还是更新内容
-        switch (typeof value) {
-            case 'string':
-                newtodo.title = value
-                break
-            case 'boolean':
-                newtodo.completed = value
-                break
-            default:
-                break
-        }
-        // 调用父组件提供的更新方法
-        this.props.updateTodos(newtodo)
-    }
-
-    /**
      * 一次更改所有todo.completed
      */
     toggleAllTodos = (e) => {
         let toggleAll = e.target.checked
-        // 更新所有todos
-        let newtodos = this.props.todos.map(val => {
-            let newtodo = Object.assign(val)
-            newtodo.completed = toggleAll
-            return newtodo
-        })
-        this.props.updateTodos(newtodos)
+        this.props.toggleAllTodos(toggleAll)
         // 更新state
         this.setState({ toggleAll })
     }
@@ -81,10 +52,8 @@ class TodoList extends React.Component {
      * @id 删除项todo的id
      */
     deleteTodo = (id) => {
-        // 筛选出未被删除的todo
-        let newtodos = this.props.todos.filter(val => val.id !== id)
         // 更新todos
-        this.props.updateTodos(newtodos)
+        this.props.deleteTodo(id)
     }
 
     /**

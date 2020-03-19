@@ -48,19 +48,19 @@ class Header extends React.Component {
 function Footer(props) {
     return (
         <footer className="footer">
-            <span className="todo-count"><strong>0</strong> item left</span>
+            <span className="todo-count"><strong>{props.left}</strong> item left</span>
             <ul className="filters">
                 <li>
-                    <a className="selected" href="#/">All</a>
+                    <a className={props.hash === '' ? 'selected' : ''} href="#/">All</a>
                 </li>
                 <li>
-                    <a href="#/active">Active</a>
+                    <a className={props.hash === 'active' ? 'selected' : ''} href="#/active">Active</a>
                 </li>
                 <li>
-                    <a href="#/completed">Completed</a>
+                    <a className={props.hash === 'completed' ? 'selected' : ''} href="#/completed">Completed</a>
                 </li>
             </ul>
-            <button className="clear-completed">Clear completed</button>
+            <button className="clear-completed" onClick={props.clearCompleted}>Clear completed</button>
         </footer>
     )
 }
@@ -71,7 +71,8 @@ class TodoMvc extends React.Component {
         todos: [
             { completed: false, title: '测试文本', id: 1 },
         ],
-        mainIpt: ''
+        mainIpt: '',
+        hash: ''
     }
 
     componentDidMount() {
@@ -84,6 +85,9 @@ class TodoMvc extends React.Component {
         } else {
             window.localStorage.setItem('reactTodomvc', JSON.stringify([]))
         }
+        // 初始化hash
+        this.hashChange()
+        window.addEventListener('hashchange', this.hashChange)
     }
 
     /**
@@ -106,6 +110,31 @@ class TodoMvc extends React.Component {
     }
 
     /**
+     * 一次更改所有todo.completed
+     * @state 目标状态
+     */
+    toggleAllTodos = (state) => {
+        // 更新所有todos
+        let newtodos = this.state.todos.map(val => {
+            let newtodo = Object.assign(val)
+            newtodo.completed = state
+            return newtodo
+        })
+        this.changeTodos(newtodos)
+    }
+
+    /**
+     * 删除一项todo
+     * @id 删除项todo的id
+     */
+    deleteTodo = (id) => {
+        // 筛选出未被删除的todo
+        let newtodos = this.state.todos.filter(val => val.id !== id)
+        // 更新todos
+        this.changeTodos(newtodos)
+    }
+
+    /**
      * 添加state.todos
      * @todoTitle 添加的todo的标题
      */
@@ -117,10 +146,46 @@ class TodoMvc extends React.Component {
         window.localStorage.setItem('reactTodomvc', JSON.stringify(newTodos))
     }
 
+    /**
+     * 根据条件筛选todos
+     */
+    filterTodos = (type) => {
+        switch (type) {
+            case 'active':
+                return this.state.todos.filter(val => !val.completed)
+            case 'completed':
+                return this.state.todos.filter(val => val.completed)
+            default:
+                return this.state.todos
+        }
+    }
+
+    /**
+     * 清除已完成todo
+     */
+    clearCompleted = () => {
+        this.changeTodos(this.filterTodos('active'))
+    }
+
+    /**
+     * 监听hash变化
+     */
+    hashChange = () => {
+        this.setState({ hash: window.location.hash.substr(2) })
+    }
+
     render() {
+        // 筛选todos
+        let todos = this.filterTodos(this.state.hash)
         // 无待办事项时隐藏
-        let todoslist = this.state.todos.length > 0 ? (<TodoList todos={this.state.todos} updateTodos={this.changeTodos} />) : ''
-        let footer = this.state.todos.length > 0 ? (<Footer />) : ''
+        let todoslist = this.state.todos.length > 0 ? (
+            <TodoList todos={todos} updateTodos={this.changeTodos}
+                toggleAllTodos={this.toggleAllTodos} deleteTodo={this.deleteTodo}
+            />) : ''
+        let footer = this.state.todos.length > 0 ? (
+            <Footer left={this.filterTodos('active').length} clearCompleted={this.clearCompleted}
+                hash={this.state.hash}
+            />) : ''
         return (
             <section className="todoapp">
                 <Header onInsertTodos={this.insertTodos} />
