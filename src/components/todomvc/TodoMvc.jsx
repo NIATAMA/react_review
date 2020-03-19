@@ -74,6 +74,18 @@ class TodoMvc extends React.Component {
         mainIpt: ''
     }
 
+    componentDidMount() {
+        // 检查localStorage中是否有数据
+        let rdata = window.localStorage.getItem('reactTodomvc')
+        if (rdata) {
+            this.setState({
+                todos: JSON.parse(rdata)
+            })
+        } else {
+            window.localStorage.setItem('reactTodomvc', JSON.stringify([]))
+        }
+    }
+
     /**
      * 更新state.todos
      * @todo 更新的元素或者数组

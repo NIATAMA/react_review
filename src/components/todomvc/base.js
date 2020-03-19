@@ -1,7 +1,6 @@
 /* global _ */
 (function () {
 	'use strict';
-
 	/* jshint ignore:start */
 	// Underscore's Template Module
 	// Courtesy of underscorejs.org
